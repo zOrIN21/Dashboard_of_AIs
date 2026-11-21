@@ -1,0 +1,206 @@
+.list {
+  --columns: minmax(0, 2.1fr) minmax(0, 1.8fr) 132px 168px 96px;
+
+  overflow: hidden;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: var(--columns);
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bg);
+}
+
+.alignEnd {
+  text-align: right;
+}
+
+.items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.items > li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--columns);
+  grid-template-areas: 'name repo status created duration';
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: 0;
+  background: transparent;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+button.row:hover {
+  background: var(--color-bg);
+}
+
+button.row:focus-visible {
+  outline-offset: -3px;
+}
+
+.rowSelected {
+  background: var(--color-surface-muted);
+  box-shadow: inset 3px 0 0 var(--color-ink);
+}
+
+.name,
+.repo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  grid-area: name;
+}
+
+.repo {
+  grid-area: repo;
+}
+
+.status {
+  grid-area: status;
+}
+
+.created {
+  grid-area: created;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.nameText {
+  overflow: hidden;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.runId,
+.branch {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.repoName {
+  overflow: hidden;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.branch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.branch svg {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.created,
+.duration {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-soft);
+}
+
+.duration {
+  text-align: right;
+}
+
+.mobileLabel {
+  display: none;
+}
+
+/* Skeleton */
+.skeletonRow {
+  cursor: default;
+}
+
+.bone {
+  display: block;
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #efe9dd 0%, #f7f3ec 40%, #efe9dd 80%);
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Tablet: tighter fixed columns */
+@media (max-width: 1080px) {
+  .list {
+    --columns: minmax(0, 2fr) minmax(0, 1.6fr) 124px 140px 84px;
+  }
+}
+
+/* Mobile: rows become cards */
+@media (max-width: 760px) {
+  .header {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'name status'
+      'repo repo'
+      'created duration';
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .status {
+    align-self: start;
+    justify-self: end;
+  }
+
+  .created,
+  .duration {
+    font-size: 13px;
+    color: var(--color-ink-muted);
+  }
+
+  .mobileLabel {
+    display: inline;
+  }
+}

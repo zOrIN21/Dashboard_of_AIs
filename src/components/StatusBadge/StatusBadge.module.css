@@ -1,0 +1,63 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 7px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--badge-color);
+  background: var(--badge-bg);
+}
+
+.icon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ring {
+  opacity: 0.9;
+}
+
+.track {
+  opacity: 0.25;
+}
+
+.queued {
+  --badge-color: var(--color-queued);
+  --badge-bg: var(--color-queued-bg);
+}
+
+.running {
+  --badge-color: var(--color-running);
+  --badge-bg: var(--color-running-bg);
+}
+
+.running .icon {
+  animation: spin 1s linear infinite;
+}
+
+.succeeded {
+  --badge-color: var(--color-succeeded);
+  --badge-bg: var(--color-succeeded-bg);
+}
+
+.failed {
+  --badge-color: var(--color-failed);
+  --badge-bg: var(--color-failed-bg);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

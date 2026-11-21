@@ -1,0 +1,171 @@
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* Search */
+.search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--color-ink-muted);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 44px 0 42px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  /* 16px keeps iOS Safari from zooming into the field */
+  font-size: 16px;
+}
+
+.searchInput::placeholder {
+  color: var(--color-ink-muted);
+}
+
+.searchInput:focus-visible {
+  outline-offset: 0;
+}
+
+.shortcut {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-50%);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-muted);
+  pointer-events: none;
+}
+
+.searchInput:focus ~ .shortcut,
+.searchInput:not(:placeholder-shown) ~ .shortcut {
+  display: none;
+}
+
+/* Sort */
+.sort {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.sortLabel {
+  position: absolute;
+  left: 14px;
+  font-size: 13px;
+  color: var(--color-ink-muted);
+  pointer-events: none;
+}
+
+.sortSelect {
+  height: 44px;
+  padding: 0 36px 0 52px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%230d1b2e' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      no-repeat right 12px center / 16px,
+    var(--color-surface);
+  font-weight: 500;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Status filter */
+.filter {
+  display: flex;
+  /* Wraps instead of scrolling sideways, so the active filter is always visible */
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.filterButton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-3);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.filterButton:has(.filterCount) {
+  padding-right: var(--space-2);
+}
+
+.filterButton:hover {
+  border-color: var(--color-border-strong);
+}
+
+.filterButtonActive {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.filterCount {
+  min-width: 22px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-ink-muted);
+}
+
+.filterButtonActive .filterCount {
+  background: rgba(251, 248, 242, 0.16);
+  color: var(--color-bg);
+}
+
+@media (max-width: 560px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .sortSelect {
+    width: 100%;
+  }
+}
