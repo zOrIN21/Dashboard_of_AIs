@@ -178,7 +178,12 @@ span.navItem {
   .sidebar {
     position: fixed;
     inset: 0 auto 0 0;
-    z-index: 20;
+    /*
+     * Closed: below the run details backdrop (z-index 10), so while it slides out
+     * (e.g. the window is narrowed with a run open) it is dimmed like the page.
+     * Open: above everything, see .sidebarOpen.
+     */
+    z-index: 5;
     width: min(280px, 85vw);
     padding: var(--space-3) var(--space-4) var(--space-5);
     box-shadow: 24px 0 48px rgba(13, 27, 46, 0.18);
@@ -191,6 +196,7 @@ span.navItem {
   }
 
   .sidebarOpen {
+    z-index: 20;
     transform: translateX(0);
     visibility: visible;
     transition:
