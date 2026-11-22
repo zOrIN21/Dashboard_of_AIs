@@ -10,6 +10,10 @@
   --color-border-strong: #0d1b2e;
   --color-focus: #3c6fd8;
 
+  /* One focus ring for every control: a blue ring separated from the element's border by a gap */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
   --color-queued: #5b5f73;
   --color-queued-bg: #ecebf1;
   --color-running: #1d5bbf;
@@ -80,8 +84,8 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .visually-hidden {

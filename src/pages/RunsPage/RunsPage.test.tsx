@@ -93,6 +93,23 @@ describe('RunsPage', () => {
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 
+  it('closes the details with Escape after a click on plain text moved focus away from the buttons', async () => {
+    const { user } = renderRunsPage();
+    await waitForRuns();
+
+    await user.click(screen.getByRole('button', { name: /fix checkout tests/i }));
+    const dialog = screen.getByRole('dialog', { name: 'Fix checkout tests' });
+
+    await user.click(within(dialog).getByText(/flaky test fixed/i));
+    // Worst case: focus ends up on <body>, outside the dialog.
+    (document.activeElement as HTMLElement | null)?.blur();
+    expect(document.activeElement).toBe(document.body);
+
+    await user.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /fix checkout tests/i })).toHaveFocus();
+  });
+
   it('shows an empty state and resets search and filters', async () => {
     const { user } = renderRunsPage();
     await waitForRuns();

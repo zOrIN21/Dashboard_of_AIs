@@ -45,10 +45,6 @@
   color: var(--color-ink-muted);
 }
 
-.searchInput:focus-visible {
-  outline-offset: 0;
-}
-
 .shortcut {
   position: absolute;
   top: 50%;

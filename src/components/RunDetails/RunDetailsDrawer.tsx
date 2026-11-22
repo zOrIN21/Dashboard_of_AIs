@@ -1,4 +1,5 @@
-import { useEffect, useRef, type KeyboardEvent } from 'react';
+import { useRef } from 'react';
+import { useModalBehavior } from '../../hooks/useModalBehavior';
 import type { Run } from '../../types/run';
 import { Button } from '../Button/Button';
 import { RunDetailsContent } from './RunDetailsContent';
@@ -11,54 +12,23 @@ type RunDetailsDrawerProps = {
   onClose: () => void;
 };
 
-const FOCUSABLE_SELECTOR =
-  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
 const TITLE_ID = 'run-details-title';
 
 export const RunDetailsDrawer = ({ runId, run, onClose }: RunDetailsDrawerProps) => {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Move focus into the drawer, lock page scroll, and give focus back to the row on close.
-  useEffect(() => {
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      const row = document.querySelector<HTMLElement>(`[data-run-id="${CSS.escape(runId)}"]`);
-      (row ?? previouslyFocused)?.focus();
-    };
-  }, [runId]);
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
-      event.stopPropagation();
-      onClose();
-      return;
-    }
-    if (event.key !== 'Tab' || !panelRef.current) return;
-
-    // Keep keyboard focus inside the dialog while it is open.
-    const focusable = [...panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)];
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (!first || !last) return;
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
+  useModalBehavior({
+    isActive: true,
+    containerRef: panelRef,
+    initialFocusRef: closeButtonRef,
+    // Give focus back to the row the drawer was opened from.
+    getReturnFocusTarget: () => document.querySelector<HTMLElement>(`[data-run-id="${CSS.escape(runId)}"]`),
+    onClose,
+  });
 
   return (
-    <div className={styles.root} onKeyDown={handleKeyDown}>
+    <div className={styles.root}>
       <div className={styles.backdrop} onClick={onClose} aria-hidden="true" />
       <div
         ref={panelRef}
@@ -66,6 +36,7 @@ export const RunDetailsDrawer = ({ runId, run, onClose }: RunDetailsDrawerProps)
         role="dialog"
         aria-modal="true"
         aria-labelledby={TITLE_ID}
+        tabIndex={-1}
       >
         <div className={styles.topBar}>
           <Button ref={closeButtonRef} variant="ghost" onClick={onClose} className={styles.backButton}>

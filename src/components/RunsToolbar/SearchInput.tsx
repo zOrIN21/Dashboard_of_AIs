@@ -18,6 +18,8 @@ export const SearchInput = ({ value, onChange }: SearchInputProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== '/' || event.ctrlKey || event.metaKey || event.altKey) return;
       if (isTypingTarget(event.target)) return;
+      // The search is behind an open dialog (details drawer or mobile menu).
+      if (document.querySelector('[aria-modal="true"]')) return;
       event.preventDefault();
       inputRef.current?.focus();
     };

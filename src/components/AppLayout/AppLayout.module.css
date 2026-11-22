@@ -5,6 +5,11 @@
   min-height: 100dvh;
 }
 
+/* Top bar with the menu button: only on narrow screens */
+.topBar {
+  display: none;
+}
+
 .sidebar {
   position: sticky;
   top: 0;
@@ -15,6 +20,49 @@
   height: 100dvh;
   padding: var(--space-5) var(--space-4);
   border-right: 1.5px solid var(--color-border-strong);
+  background: var(--color-bg);
+}
+
+/* The sidebar takes focus only so clicks inside keep focus in the drawer; no ring needed */
+.sidebar:focus {
+  outline: none;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconButton {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  transition: background-color 0.15s ease;
+}
+
+.iconButton:hover {
+  background: var(--color-surface-muted);
+}
+
+.iconButton svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+/* Declared after .iconButton so it wins: the close button exists only in the mobile drawer */
+.closeButton {
+  display: none;
 }
 
 .logo {
@@ -100,39 +148,71 @@ span.navItem {
   font-family: var(--font-sans);
 }
 
+.backdrop {
+  display: none;
+}
+
 .main {
   min-width: 0;
   padding: var(--space-6) var(--space-6) var(--space-7);
 }
 
-/* Narrow screens: the sidebar turns into a compact top bar */
+/* Narrow screens: top bar with a menu button, the sidebar slides in from the left */
 @media (max-width: 900px) {
   .shell {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .sidebar {
-    position: static;
-    flex-direction: row;
+  .topBar {
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: auto;
+    gap: var(--space-3);
     padding: var(--space-3) var(--space-4);
-    border-right: 0;
     border-bottom: 1.5px solid var(--color-border-strong);
   }
 
-  .sidebar nav {
-    display: none;
+  .topBar .logo {
+    padding: 0;
   }
 
-  .project {
-    flex-direction: row;
-    align-items: baseline;
-    gap: var(--space-2);
-    margin: 0;
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    width: min(280px, 85vw);
+    padding: var(--space-3) var(--space-4) var(--space-5);
+    box-shadow: 24px 0 48px rgba(13, 27, 46, 0.18);
+    transform: translateX(-100%);
+    /* visibility keeps the hidden drawer out of the Tab order; it switches after the slide-out ends */
+    visibility: hidden;
+    transition:
+      transform 0.28s var(--ease-out),
+      visibility 0s linear 0.28s;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+    visibility: visible;
+    transition:
+      transform 0.28s var(--ease-out),
+      visibility 0s;
+  }
+
+  .sidebarHeader .logo {
     padding: 0;
-    border: 0;
+  }
+
+  .closeButton {
+    display: grid;
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    display: block;
+    background: rgba(13, 27, 46, 0.36);
+    animation: fadeIn 0.2s ease-out;
   }
 
   .main {
@@ -140,9 +220,8 @@ span.navItem {
   }
 }
 
-/* Phones: the page eyebrow already names the project */
-@media (max-width: 480px) {
-  .project {
-    display: none;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
 }

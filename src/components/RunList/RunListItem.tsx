@@ -24,6 +24,7 @@ export const RunListItem = ({ run, isSelected, onSelect }: RunListItemProps) => 
       </span>
 
       <span className={styles.repo}>
+        <span className={styles.fieldLabel}>Repository</span>
         <span className={styles.repoName}>{run.repository}</span>
         <span className={styles.branch}>
           <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -40,15 +41,19 @@ export const RunListItem = ({ run, isSelected, onSelect }: RunListItemProps) => 
         <StatusBadge status={run.status} />
       </span>
 
+      {/* Field labels are hidden while the table header is visible and appear in the card layout */}
       <span className={styles.created}>
+        <span className={styles.fieldLabel}>Created</span>
         <time dateTime={run.createdAt}>{formatDateTime(run.createdAt)}</time>
       </span>
 
       <span className={styles.duration}>
-        <span className={styles.mobileLabel}>Duration </span>
-        {run.durationSeconds === undefined && run.status === 'running'
-          ? 'In progress'
-          : formatDuration(run.durationSeconds)}
+        <span className={styles.fieldLabel}>Duration</span>
+        <span>
+          {run.durationSeconds === undefined && run.status === 'running'
+            ? 'In progress'
+            : formatDuration(run.durationSeconds)}
+        </span>
       </span>
     </button>
   </li>

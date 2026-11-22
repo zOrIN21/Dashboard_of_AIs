@@ -27,6 +27,11 @@
   animation: slideIn 0.32s var(--ease-out);
 }
 
+/* The panel takes focus only so clicks inside keep focus in the dialog; no ring needed */
+.panel:focus {
+  outline: none;
+}
+
 .topBar {
   position: sticky;
   top: 0;
